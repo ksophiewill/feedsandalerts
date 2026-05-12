@@ -48,3 +48,6 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 .positai
+
+#Creds
+email_creds
