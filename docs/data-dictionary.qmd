@@ -1,0 +1,32 @@
+---
+title: "data-dictionary"
+format: html
+---
+
+### 5/12/26
+
+- set up repo
+
+- set RSS feeds pull
+
+- set up emails
+
+- starting setting up cron, bug in sending on time
+
+### 5/13/26
+
+- fixed cron time bug
+
+- added formatting and formula to making the email to make it more readable
+
+- adding documentation for reproduction
+
+- decided to reformat to a function and manually make a spreadsheet of all
+
+- adding significant doc calls to justice and to epa, the rest don't work
+
+- added cute emojis because why not
+
+- writing lists as rds and then comparing if it's in there or not, if it is then don't include
+
+- updating docs
