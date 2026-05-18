@@ -1,11 +1,11 @@
 library(pacman)
 p_load(tidyverse, magrittr, tidyRSS, blastula, knitr)
 
-evening_fn <- function() {
+morning_fn <- function() {
   #set today
   today <- as.Date(Sys.Date())
   
-  #### function to get registers and clean ####
+  #### function to get feeds and clean ####
   make_register_lists <- function(name, link){
     
     ## helper function to make a md list instead of a table ##
@@ -25,7 +25,7 @@ evening_fn <- function() {
       filter(feed_pub_date >= today | item_pub_date >= today) %>% #only items posted or put in the feed today
       select(item_pub_date, feed_pub_date, item_title, item_link, item_description) %>% #just which columns I'm interested in
       filter(str_detect(item_description, 
-                        regex("technology|website|artificial intelligence|computer|data|database|privacy|cyber|modernization|fedramp|onegov|online|network|cloud|digitization|USDS|DOGE|a\\.i\\.|u\\.s\\.d\\.s\\.|d\\.o\\.g\\.e\\.|\\btech\\b", 
+                        regex("technology|website|artificial intelligence|computer|data|privacy|cyber|modernization|fedramp|onegov|online|network|cloud|digitization|USDS|DOGE|a\\.i\\.|u\\.s\\.d\\.s\\.|d\\.o\\.g\\.e\\.|\\btech\\b", 
                               ignore_case = TRUE))) %>% #get only key words
       make_md_list()
     
@@ -40,42 +40,15 @@ evening_fn <- function() {
     setNames(registers$name)
   
     #write that
-    write_rds(result_list, "./data/created/fedreg/evening_register.rds")
-  
-  #compare what was just got with what was gotten this morning and afternoon
-  morning <- read_rds("./data/created/fedreg/morning_register.rds") 
-  afternoon <- read_rds("./data/created/fedreg/afternoon_register.rds") 
-  
-  #### filter out what was already sent this morning and afternoon ####
-  result_list_updated <- imap(result_list, function(evening_str, register_name) {
-    
-    if (evening_str == "_No updates for today._") return(evening_str)
-    
-    morning_str   <- morning[[register_name]]
-    afternoon_str <- afternoon[[register_name]]
-    
-    # split all three into individual bullets
-    evening_bullets   <- str_split(evening_str,   "\n(?=\\*)")[[1]]
-    morning_bullets   <- str_split(morning_str,   "\n(?=\\*)")[[1]]
-    afternoon_bullets <- str_split(afternoon_str, "\n(?=\\*)")[[1]]
-    
-    # combine prior sends into one vector to compare
-    already_sent <- c(morning_bullets, afternoon_bullets)
-    
-    new_bullets <- evening_bullets[!evening_bullets %in% already_sent]
-    
-    if (length(new_bullets) == 0) return("_No updates for today._")
-    
-    paste(new_bullets, collapse = "\n")
-  })
+    write_rds(result_list, "./data/created/fedreg/morning_register.rds")
   
   #put them each into the environment
-  list2env(result_list_updated, envir = .GlobalEnv)
+  list2env(result_list, envir = .GlobalEnv)
   
   ###### set up email #####
   email <- compose_email(
     body = md(glue::glue(
-      "# **🌙 Evening Federal Register updates for {today} 🌙**:
+      "# **🌞 Morning Federal Register updates for {today} 🌞**:
       
       ## 🏢 GSA
       {gsa_fed_register}
@@ -108,7 +81,7 @@ evening_fn <- function() {
       {interior_sig_fed_register}
       
       -----
-      _This is an automated message sent at 11:59 p.m. {today} from KSW's Work Laptop_"
+      _This is an automated message sent at 7:00 a.m. {today} from KSW's Work Laptop_"
     ))
   )
   
@@ -121,7 +94,7 @@ evening_fn <- function() {
   email %>%  smtp_send(
     to = "sophie.will@fedscoop.com",
     from = "ksophiewill@gmail.com",
-    subject = "Evening Fed Register Updates",
+    subject = "Morning Fed Register Updates",
     credentials = creds_envvar(
       user = "ksophiewill@gmail.com",
       pass_envvar = "SMTP_PASSWORD",
