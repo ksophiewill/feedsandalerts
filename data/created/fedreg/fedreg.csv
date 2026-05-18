@@ -1,11 +1,12 @@
 ﻿name,link
-justice_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=justice-department
-justice_sig_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=justice-department&conditions%5Bsignificant%5D=1
 gsa_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=general-services-administration
 edu_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=education-department
 va_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=veterans-affairs-department
-ssa_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=social-security-administration
 epa_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=environmental-protection-agency
 epa_sig_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=environmental-protection-agency&conditions%5Bsignificant%5D=1
 interior_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=interior-department
 interior_sig_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=interior-department&conditions%5Bsignificant%5D=1
+ag_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=agriculture-department
+ag_sig_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=agriculture-department&conditions%5Bsignificant%5D=1
+usps_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=postal-service
+nara_fed_register,https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=national-archives-and-records-administration

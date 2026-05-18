@@ -5,8 +5,8 @@ morning_fn <- function() {
   #set today
   today <- as.Date(Sys.Date())
   
-  #### function to get feeds and clean ####
-  make_register_lists <- function(name, link){
+  #functions to get feeds, clean, and narrow down
+  make_lists <- function(name, link){
     
     ## helper function to make a md list instead of a table ##
     make_md_list <- function(df) {
@@ -20,65 +20,132 @@ morning_fn <- function() {
         pull(bullet) %>%
         paste(collapse = "\n") 
     }
-      #cmbine all bullets into one long string
+    #combine all bullets into one long string
     result <- tidyfeed(link) %>% 
-      filter(feed_pub_date >= today | item_pub_date >= today) %>% #only items posted or put in the feed today
+      filter(item_pub_date >= today) %>% #only items published today
       select(item_pub_date, feed_pub_date, item_title, item_link, item_description) %>% #just which columns I'm interested in
       filter(str_detect(item_description, 
                         regex("technology|website|artificial intelligence|computer|data|privacy|cyber|modernization|fedramp|onegov|online|network|cloud|digitization|USDS|DOGE|a\\.i\\.|u\\.s\\.d\\.s\\.|d\\.o\\.g\\.e\\.|\\btech\\b", 
                               ignore_case = TRUE))) %>% #get only key words
+      ## SOPHIE ADD AGENCY FILTERING
       make_md_list()
     
     return(result)
   }
   
+  #### FEDERAL REGISTER ####
   #read in registers 
   registers <- read.csv("./data/created/fedreg/fedreg.csv")
   
   #run function and set names 
-  result_list <- map2(registers$name, registers$link, make_register_lists) %>%
+  registers_results <- map2(registers$name, registers$link, make_lists) %>%
     setNames(registers$name)
   
     #write that
-    write_rds(result_list, "./data/created/fedreg/morning_register.rds")
+    write_rds(registers_results, "./data/created/fedreg/morning_register.rds")
   
   #put them each into the environment
-  list2env(result_list, envir = .GlobalEnv)
+  list2env(registers_results, envir = .GlobalEnv)
+  
+  
+  #### GAO ####
+
+  #read in registers 
+  gao <- read.csv("./data/created/gao/gao.csv")
+  
+  #run function and set names 
+  gao_results <- map2(gao$name, gao$link, make_lists) %>%
+    setNames(gao$name)
+  
+  #write that
+  write_rds(gao_results, "./data/created/fedreg/morning_gao.rds")
+  
+  #put them each into the environment
+  list2env(gao_results, envir = .GlobalEnv)
+  
+  
+  #### GRANTS ####
+  
+  
+  
+  
+  #### USASPENDING ####
+  
+  
+  
+  
+  #### COURTLISTENER ####
+  
+  
   
   ###### set up email #####
   email <- compose_email(
     body = md(glue::glue(
-      "# **🌞 Morning Federal Register updates for {today} 🌞**:
+      "# **🌞 Morning RSS Feeds for {today} 🌞**:
       
-      ## 🏢 GSA
+      -----
+      
+      # _📜FEDERAL REGISTER:📜_ 
+      
+      ## 🏢 GSA 🏢
       {gsa_fed_register}
       
-      ## ⚖️ Justice
-      {justice_fed_register}
+      ## 🌾 Agriculture 🌾
+      {ag_fed_register}
       
-      ### ⚖️ Justice significant docs
-      {justice_sig_fed_register}
+      ### 🌾 Agriculture significant docs 🌾
+      {ag_sig_fed_register}
       
-      ## 📚 Education
+      ## 📚 Education 📚
       {edu_fed_register}
       
-      ## 🪖 VA
+      ## 🪖 VA 🪖
       {va_fed_register}
       
-      ## 👵 SSA
-      {ssa_fed_register}
-      
-      ## 🌎 EPA
+      ## 🌎 EPA 🌎
       {epa_fed_register}
       
-      ### 🌎 EPA significant docs
+      ### 🌎 EPA significant docs 🌎
       {epa_sig_fed_register}
       
-      ## 🏜️ Interior
+      ## 🏜️ Interior 🏜
       {interior_fed_register}
       
-      ### 🏜️ Interior significant docs
+      ### 🏜️ Interior significant docs 🏜
       {interior_sig_fed_register}
+      
+      ## 💌 USPS 💌
+      {usps_fed_register}
+      
+      ## 🏛️ Archives 🏛
+      {nara_fed_register}
+      
+      -----
+      # _📜GAO:📜_
+      
+      ## Reports
+      {gao_reports}
+      
+      ## Legal
+      {gao_legal}
+      
+      ## Legal Rules
+      {gao_legal_rules}
+      
+      ## Press releases
+      {gao_press}
+      
+      ## Blog
+      {gao_blog}
+      
+      -----
+      # _📜GRANTS:📜_
+      
+      -----
+      # _📜USA SPENDING:📜_
+      
+      -----
+      # _📜COURTS:📜_
       
       -----
       _This is an automated message sent at 7:00 a.m. {today} from KSW's Work Laptop_"
@@ -94,7 +161,7 @@ morning_fn <- function() {
   email %>%  smtp_send(
     to = "sophie.will@fedscoop.com",
     from = "ksophiewill@gmail.com",
-    subject = "Morning Fed Register Updates",
+    subject = "🌞 Morning RSS Updates 🌞",
     credentials = creds_envvar(
       user = "ksophiewill@gmail.com",
       pass_envvar = "SMTP_PASSWORD",

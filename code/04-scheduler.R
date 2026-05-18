@@ -1,9 +1,9 @@
 library(pacman)
 p_load(tidyverse, later)
 
-source("./code/01-morning-RSS.R")
-source("./code/02-afternoon-RSS.R")
-source("./code/03-evening-RSS.R")
+source("/Users/sophiewill/Documents/data_projects/feedsandalerts/code/01-morning-RSS.R")
+source("/Users/sophiewill/Documents/data_projects/feedsandalerts/code/02-afternoon-RSS.R")
+source("/Users/sophiewill/Documents/data_projects/feedsandalerts/code/03-evening-RSS.R")
 
 # wrap each send in a safe function so one failure doesn't kill the scheduler
 safe_run <- function(label, fn) {
@@ -46,4 +46,8 @@ schedule_daily("Evening",   23, 59, evening_fn)
 
 # keep the session alive and let later's event loop tick
 message("Scheduler running. Detach with Ctrl+A then D.")
-while (TRUE) later::run_now(sleep_time = 60)
+# with this
+while (TRUE) {
+  later::run_now()
+  Sys.sleep(60)
+}
