@@ -8,13 +8,13 @@ This repository automates RSS feeds to customized email alerts.
 
 - code:
 
-  - 01-setting-up-morning-RSS.R - code to pull RSS feeds and format it to be readable at 7am
+  - 01-morning-RSS.R - code to pull RSS feeds and format it to be readable at 7am
 
   - 02-afternoon-RSS.R - code to pull RSS feeds and format it to be readable at 1pm
 
   - 03-afternoon-RSS.R - code to pull RSS feeds and format it to be readable at 11:59pm
 
-  - 04-automate-RSS-emails.R - using cron to automate emails
+  - 04-scheduler.R - schedule for screen & caffeinate to use
 
 - docs:
 
@@ -33,3 +33,13 @@ This repository automates RSS feeds to customized email alerts.
       - afternoon_register.rds - afternoon federal register
 
       - evening_register.rds - evening federal register
+
+    - gao
+
+      - gao.csv - list of names and links to the gao RSS feeds
+
+      - morning_gao.rds - morning gao reports
+
+      - afternoon_gao.rds - afternoon gao reports
+
+      - evening_gao.rds - evening gao reports
