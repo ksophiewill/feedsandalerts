@@ -8,13 +8,9 @@ This repository automates RSS feeds to customized email alerts.
 
 - code:
 
-  - 01-morning-RSS.R - code to pull RSS feeds and format it to be readable at 7am
+  - 01-RSS-setup.R - code to pull RSS feeds and format it to be readable, writes RSS feeds to database then filters it
 
-  - 02-afternoon-RSS.R - code to pull RSS feeds and format it to be readable at 1pm
-
-  - 03-afternoon-RSS.R - code to pull RSS feeds and format it to be readable at 11:59pm
-
-  - 04-scheduler.R - schedule for screen & caffeinate to use
+  - 02-scheduler.R - schedule for screen & caffeinate to use
 
 - docs:
 
@@ -24,25 +20,13 @@ This repository automates RSS feeds to customized email alerts.
 
   - created
 
-    - fed_reg
+    - fedreg.csv - list of names and links to the federal register RSS feeds
 
-      - fedreg.csv - list of names and links to the federal register RSS feeds
+    - gao.csv - list of names and links to the gao RSS feeds
 
-      - morning_register.rds - morning federal register
+    - feeds_database.db - SQL database of the feeds
 
-      - afternoon_register.rds - afternoon federal register
-
-      - evening_register.rds - evening federal register
-
-    - gao
-
-      - gao.csv - list of names and links to the gao RSS feeds
-
-      - morning_gao.rds - morning gao reports
-
-      - afternoon_gao.rds - afternoon gao reports
-
-      - evening_gao.rds - evening gao reports
+    - email_log.txt - log of emails sent
 
 ### INFO FOR CAFFEINATE
 
