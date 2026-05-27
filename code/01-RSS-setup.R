@@ -154,7 +154,6 @@ rss_fn <- function() {
         to = "sophie.will@fedscoop.com",
         from = "ksophiewill@gmail.com",
         subject = "🌞 RSS Updates 🌞",
-        verbose = FALSE,
         credentials = creds_envvar(user = "ksophiewill@gmail.com", pass_envvar = "SMTP_PASSWORD", provider = "gmail")
       )
       cat(sprintf("[%s] SUCCESS: Email sent\n", Sys.time()))
