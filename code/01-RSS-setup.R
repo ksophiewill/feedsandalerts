@@ -139,6 +139,7 @@ rss_fn <- function() {
   ## Legal Rules\n{gao_legal_rules}
   ## Press releases\n{gao_press}
   ## Blog\n{gao_blog}
+  
   -----
   _This is an automated message sent from KSW's Work Laptop_
   "))
