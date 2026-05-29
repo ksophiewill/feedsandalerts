@@ -1,9 +1,9 @@
 library(pacman)
 p_load(tidyverse, magrittr, tidyRSS, blastula, knitr, DBI, RSQLite, glue)
 
-#set file path and wd
-file_path <- "/Users/sophiewill/Documents/data_projects/feedsandalerts"
-setwd(file_path)
+# #set file path and wd
+# file_path <- "/Users/sophiewill/Documents/data_projects/feedsandalerts"
+# setwd(file_path)
 
 ## Helper function made global so both loops can access it ##
 make_md_list <- function(df) {
