@@ -1,0 +1,41 @@
+name: Daily RSS Emailer
+
+on:
+  schedule:
+    # Times are in UTC (EDT + 4 hours)
+    - cron: '0 11 * * *'   # Runs at 7:00 AM EDT
+    - cron: '0 17 * * *'   # Runs at 1:00 PM EDT
+    - cron: '45 3 * * *'   # Runs at 11:45 PM EDT
+  workflow_dispatch:       # Adds a button so you can test it manually anytime!
+
+jobs:
+  run-rss-script:
+    runs-on: macos-latest  # Runs on a Mac server so your packages compile perfectly
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+
+      - name: Install pacman and packages
+        run: |
+          Rscript -e "install.packages('pacman', repos='http://cran.rstudio.com/')"
+          Rscript -e "pacman::p_load(tidyverse, magrittr, tidyRSS, blastula, knitr, DBI, RSQLite, glue)"
+
+      - name: Run RSS Script
+        env:
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        run: Rscript code/01-RSS-setup.R
+
+      - name: Save Database & Log Updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/created/feeds_database.db
+          git add data/created/email_log.txt
+          git commit -m "Automated update: RSS database and log" || echo "No changes to commit"
+          git push
