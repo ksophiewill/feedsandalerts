@@ -165,3 +165,6 @@ rss_fn <- function() {
   #log it 
   cat(log_output, file = log_file, sep = "\n", append = TRUE)
 }
+
+#run it 
+rss_fn()
