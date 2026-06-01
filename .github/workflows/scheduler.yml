@@ -2,15 +2,20 @@ name: Daily RSS Emailer
 
 on:
   schedule:
-    # Times are in UTC (EDT + 4 hours)
-    - cron: '0 11 * * *'   # Runs at 7:00 AM EDT
-    - cron: '0 17 * * *'   # Runs at 1:00 PM EDT
-    - cron: '45 3 * * *'   # Runs at 11:45 PM EDT
-  workflow_dispatch:       # Adds a button so you can test it manually anytime!
+    # Shifted to off-peak minutes to bypass GitHub's top-of-the-hour queue delays
+    - cron: '53 10 * * *'   # ~ 6:53 AM EDT (Runs right before 7:00 AM)
+    - cron: '47 16 * * *'   # ~ 12:47 PM EDT (Runs right before 1:00 PM)
+    - cron: '38 3 * * *'    # ~ 11:38 PM EDT (Runs right before 11:45 PM)
+  workflow_dispatch:
+
+# This physically prevents GitHub from running duplicates if the server glitches
+concurrency:
+  group: rss-emailer
+  cancel-in-progress: true
 
 jobs:
   run-rss-script:
-    runs-on: macos-latest  # Runs on a Mac server so your packages compile perfectly
+    runs-on: macos-latest
     
     steps:
       - name: Checkout repository
