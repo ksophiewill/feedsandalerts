@@ -3,9 +3,9 @@ name: Daily RSS Emailer
 on:
   schedule:
     # Shifted to off-peak minutes to bypass GitHub's top-of-the-hour queue delays
-    - cron: '53 10 * * *'   # ~ 6:53 AM EDT (Runs right before 7:00 AM)
-    - cron: '47 16 * * *'   # ~ 12:47 PM EDT (Runs right before 1:00 PM)
-    - cron: '38 3 * * *'    # ~ 11:38 PM EDT (Runs right before 11:45 PM)
+    - cron: '53 7 * * *'   # ~ 6:53 AM EDT (Runs right before 8:00 AM)
+    - cron: '47 12 * * *'   # ~ 12:47 PM EDT (Runs right before 1:00 PM)
+    - cron: '38 23 * * *'    # ~ 11:38 PM EDT (Runs right before 11:45 PM)
   workflow_dispatch:
 
 # This physically prevents GitHub from running duplicates if the server glitches
@@ -26,11 +26,20 @@ jobs:
         with:
           r-version: 'release'
 
-      - name: Install pacman and packages
-        run: |
-          Rscript -e "install.packages('pacman', repos='http://cran.rstudio.com/')"
-          Rscript -e "pacman::p_load(tidyverse, magrittr, tidyRSS, blastula, knitr, DBI, RSQLite, glue)"
-
+      - name: Install R packages and Linux System Dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::pacman
+            any::tidyverse
+            any::magrittr
+            any::tidyRSS
+            any::blastula
+            any::knitr
+            any::DBI
+            any::RSQLite
+            any::glue
+            
       - name: Run RSS Script
         env:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
