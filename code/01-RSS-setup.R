@@ -1,9 +1,14 @@
 library(pacman)
-p_load(tidyverse, magrittr, tidyRSS, blastula, knitr, DBI, RSQLite, glue)
+p_load(tidyverse, magrittr, tidyRSS, blastula, knitr, httr, DBI, RSQLite, glue)
 
 # #set file path and wd
 # file_path <- "/Users/sophiewill/Documents/data_projects/feedsandalerts"
 # setwd(file_path)
+
+# Disguise the script as a standard Google Chrome web browser
+fake_browser <- "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+options(HTTPUserAgent = fake_browser)
+httr::set_config(httr::user_agent(fake_browser))
 
 ## Helper function made global so both loops can access it ##
 make_md_list <- function(df) {
